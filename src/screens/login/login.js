@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import '../../assets/scss/page.scss';
 import Logo from "../../assets/images/logo technopartner.png"
-import { Link, BrowserRouter, Route, withRouter } from 'react-router-dom';
+import { Link, BrowserRouter, Route , useNavigate} from 'react-router-dom';
 import axios from "axios";
-import { Redirect } from "react-router-dom";
 
 class Login extends Component {
   constructor(props) {
@@ -14,64 +13,58 @@ class Login extends Component {
       isLoading: '',
       isChecked: false,
       errMsg: '',
-      msgNik: '',
-      msgPwd: '',
-      hasError: false
+      hasError: false,
+      grant_type:'',
+      client_secret:'',
+      client_id:''
+   
     }
-    this.handleChange= this.handleChange.bind(this);
-    this.handleSubmit= this.handleSubmit.bind(this);
+   
   }
-    handleChange(event){
+    handleChange=(event)=>{
       this.setState({
         [event.target.name]:event.target.value
       }) 
     }
     componentDidMount() {
-     if(localStorage.getItem('accessToken')){
-        this.props.history.push('/');
+     if(localStorage.getItem('access_token')){
+       // this.props.history.push('/');
       } 
     }
-    handleSubmit(event){  
+    handleSubmit=(event)=>{  
       event.preventDefault();
       this.setState ({ isLoading: true });
+      
      
       const{username,password}=this.state;
-      // const config = {
-      //   headers: {
-      //     "Access-Control-Allow-Origin": "*",
-      //     "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-      //     'Authorization': 'Bearer accessToken' 
-      //   }
-      // };
-      
       axios.post( "https://soal.staging.id/oauth/token",{
         username:username,
         password:password,
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-        'Authorization': 'Bearer accessToken' 
+        grant_type:'password',
+        client_secret:'0a40f69db4e5fd2f4ac65a090f31b823',
+        client_id:'e78869f77986684a'
       })
       .then((response) => {
         console.log(response.data);
         this.setState ({ isLoading: false });
-             
-             if(response.data){
-              if(response.data.accessToken){
-                localStorage.setItem('accessToken', response.data.accessToken)
        
-                this.props.history.push('/');
-              
-              }    
-              else{
-                this.setState({
-                  msg:response.data.message,
-                });
-                setTimeout(()=>{
-                  this.setState({msg:"error"});
-                },2000);
-              }
-            } 
-          }) 
+      
+          if(response.data.access_token && response.data.token_type){
+            localStorage.setItem('access_token', response.data.access_token)
+            localStorage.getItem('access_token')
+            this.props.history('/');
+          
+          }    
+          else{
+            this.setState({
+              msg:response.data.message,
+            });
+            setTimeout(()=>{
+              this.setState({msg:"error"});
+            },2000);
+          }
+    
+      }) 
     }
 
 
@@ -119,7 +112,7 @@ class Login extends Component {
               type="submit"
               className="button_login"
               style={{}}
-             onClick={() => this.handleSubmit}
+            // onClick={() => this.handleSubmit}
             >
               Login
             </button>
@@ -147,7 +140,9 @@ class Login extends Component {
     );
   }
 }
-export default Login; 
+export default (props) => (
+  <Login history={useNavigate()} />
+);
 // const [isLogin, setIsLoging] = useState(localStorage.isLogin ? true : false);
 // return (
 //   <>

@@ -1,40 +1,80 @@
-@media only screen and (min-device-width : 425px) and (max-device-width : 800px){
+@media only screen and (min-device-width : 360px) and (max-device-width : 900px) {
   * {
     box-sizing: border-box;
-    -webkit-tap-highlight-color:  transparent;
+    -webkit-tap-highlight-color: transparent;
   }
-  .menu{
+
+  .product {
     width: 100%;
-    background-color: rgb(255, 255, 255);
-    .text_menu{
-      width: 100px;
-      font-size: 25px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .menu_cover{
-      width: 100%;
-      color: black;
-      display: flex;
-      justify-content: center;
-      .per_menu{
-        height: 40px;
-        color:black ;
-        min-width: 30px;
-        padding: 5px;
-        padding-left: 20px;
-        padding-right: 20px;
-        text-decoration: none;
-        &:hover {
+    height: 100vh;
+   
+   margin-top: 230px;
+
+    .categories {
+      min-height: 100px;
+ 
+      .wrapWriteCat {
+        height: 30px;
+        background-color: rgb(226, 225, 225);
+        width: 100%;
+
+        .writeCat {
+
+          margin: 5px;
           font-weight: bold;
-          height: 4qh;
-          filter: brightness(120%);
-          -webkit-filter: brightness(120%);
-          //background-color: #be7d02;
-          border-bottom: solid black;
+          font-size: 15px;
         }
       }
+
+      .wrapProd {
+        margin: 15px;
+        padding: 10px;
+        background-color: light-grey;
+        min-height: 50px;
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+
+        .wrap_image_product {
+
+          width: 15%;
+          height: 50px;
+
+          .image_product {
+            margin: 5px;
+            width: 50px;
+            height: 50px;
+
+          }
+
+        }
+
+        .prod_ket {
+          width: 70%;
+          padding: 5px;
+
+          .write_prod_ket1 {
+            font-weight: bold;
+          }
+
+          .write_prod_ket2 {
+            font-size: 10px;
+          }
+        }
+
+        .prod_price {
+          width: 15%;
+
+          .write_prod_price {
+            padding: 2px;
+            font-size: 15px;
+            font-weight: bold;
+          }
+        }
+      }
+
+
     }
+
   }
 }

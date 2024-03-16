@@ -2,137 +2,155 @@ import { Component } from 'react';
 import '../../assets/scss/page.scss';
 import Menu from '../../components/menu'
 import axios from "axios"
+import Motif from "../../assets/images/home1.png"
+import Menu2 from "../../components/menu2"
 class report extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
     this.state = {
       tampilkanPopu: false,
-      domisili:[],
-      categories:'',
-      
-      cName:'',
-      mName:'',
-      mDes:'',
-      mPhoto:'',
-      mPrice:'',
-     
+      domisili: [],
+      categories: '',
+      item: [],
+      itemMenu: [],
+      itemSecon: [],
     }
   }
-  componentDidMount(){
-    //localStorage.getItem('token')
-   
-    this.domisiliNaive()
-   
+  componentDidMount() {
+
+    this.app().callToken()
+
   }
-  domisiliNaive = ()=>  {
-    axios.post("https://soal.staging.id/api/menu")
-    .then(response=>{
-      console.log("response :", response.result.categories)
-      const categories = response.result.categories;
-      this.setState({categories});      
-    })
-    .catch(erroe=>{
-      console.log("error");
-    })
+  app = () => {
+    const callMenu = (token) => {
+      const body = new FormData();
+      body.append("show_all", 1)
+
+      fetch("https://soal.staging.id/api/menu", {
+        method: "post",
+        body: body,
+        headers: {
+          Authorization: `${token.token_type} ${token.access_token}`
+        }
+      }).then((e) => e.json())
+        .then((e) => {
+          console.log(e, 'data menu')
+          console.log(e.result.categories.menu, 'dhue')
+          // return res
 
 
+          const item = e.result.categories;
+          this.setState({ item })
+          console.log("final :", item)
+        })
+    }
 
-    // const user= this.props.match.params.categories;
-    // axios.get(`https://soal.staging.id/api/menu`,{withCredentials: true})
+    const callHome = (token) => {
+      fetch('https://soal.staging.id/api/home', {
+        method: "get",
+        headers: {
+          Authorization: `${token.token_type} ${token.access_token}`
+        }
+      }).then((e) => e.json())
+        .then((e) => {
+          // console.log(e,'data home')
+          // return e
 
-    // .then(response=>{ 
-    //   console.log(response.data)
-    //   if(response.data){
-    
-    //     this.setState({
-    
-    //       categories: response.result.categories,
-    //       category_name: response.result.categories.category_name,
-    //       mName: response.result.categories.menu.name,
-    //       mDes: response.result.categories.menu.description,
-    //       mPhoto: response.result.categories.menu.photo,
-    //       mPrice: response.result.categories.menu.price ,
-          
-    //     })
-    //   }
-    // })
+        })
+    }
+
+    return {
+      callToken: () => {
+        const body = new FormData();
+        body.append("grant_type", "password")
+        body.append("client_secret", "0a40f69db4e5fd2f4ac65a090f31b823")
+        body.append("client_id", "e78869f77986684a")
+        body.append("username", "support@technopartner.id")
+        body.append("password", "1234567")
+        fetch('https://soal.staging.id/oauth/token', {
+          method: "post",
+          body: body
+        }).then((e) => e.json())
+          .then((token) => {
+            callHome(token)
+            callMenu(token)
+
+          })
+      }
+
+    }
   }
-  
-  // domisili = ()=>  {
 
-  //   axios.get(`${window.origin}/domisiliShow`,{withCredentials: true}).
-  //   then(response => {
-  //     console.log(response);
-  //     const domisili=response.data;
-  //     this.setState({domisili });
-  //   })
-  // }
-  
-  render(){
-   // const domisili = [1, 2, 3, 4, 5,6,7,8,9,10,11,12,13,14,15,16,17];
-    // const listItems = numbers.map((number) =>
-    //   <li>{number}</li>
-    // );
-    
-    return(
-    
-   
-     
-        
+  render() {
+    const { item, j } = this.state
+
+    return (
+
       <div>
-        <div className="background_dasar">
-          <Menu/>
 
-          <div className='tulisan_daftar' style={{fontSize:"30px", marginBottom:"10px"}}>PEMBERBAHARUAN SURAT DOMISILI</div>
-          <span className="sum"> Jumlah jenis surat domisili : {this.state.jumlah_surat_domisili}</span>
-         
-          <div className="letter_tabel">
-            
-            
-              
-              
-        
-           
-                {this.state.categories && this.state.categories.map((cat) => {
-                
-                  return(
-                    <tr className="body_letter" > 
-                 <td className="body_letter">
-                    <div className="write_letter">
-                       <p></p>
-                        </div>
-                </td>
-                {/* <tr className="body_letter" key= {person.id}>  */}
-                 <td className="body_letter">
-                    <div className="write_letter">
-                        {cat.category_name}
-                        </div>
-                </td>
-                 
-             </tr>
-             
-               
-            )})}
-           
-            
+        <div className="product">
 
-           
-         
-       
-          </div>
-          
+          <Menu />
+
+          {item.map((items, idx) =>
+
+            <div className="categories">
+              <div className="wrapWriteCat">
+                <div className="writeCat">
+                  <div id={items.category_name}>
+                    {items.category_name}
+                  </div>
+
+                </div>
+
+              </div>
+              {
+                (typeof (items.menu) == 'object') ?
+                  <div>
+                    {
+                      items.menu.map((ite, k) =>
+                        <div>
+                          <div className="wrapProd">
+                            <div className="wrap_image_product">
+                              <img src={ite.photo} className="image_product" />
+                            </div>
+                            <div className="prod_ket">
+                              <div className="write_prod_ket1">{ite.name}</div>
+                              <div className="write_prod_ket2">{ite.description}
+                              </div>
+                            </div>
+                            <div className="prod_price">
+                              <div className="write_prod_price">
+                                {ite.price}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                  </div>
+
+                  :
+                  null
+
+
+              }
+
+            </div>
+
+          )}
+
+
+
+
         </div>
-      
-            
+        <Menu2/>
       </div>
-      
 
-    
     )
-} 
- 
+  }
 
- 
+
+
 }
 export default report;
-   
+

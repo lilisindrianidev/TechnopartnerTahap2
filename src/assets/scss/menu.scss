@@ -3,7 +3,11 @@
     box-sizing: border-box;
     -webkit-tap-highlight-color:  transparent;
   }
-  .menu{
+  .menuFirst{
+    padding: 20px;
+    margin-top: -230px;
+    position: fixed;
+    overflow: auto;
     width: 100%;
     background-color: rgb(255, 255, 255);
     .text_menu{
@@ -14,24 +18,32 @@
       margin-right: auto;
     }
     .menu_cover{
+      min-width: 50px;
+      min-width:50px;
+      height: 100%;
+      padding: 30px;
+      margin-top: 5px;
+      margin-bottom: 5px;
       width: 100%;
       color: black;
       display: flex;
       justify-content: center;
+      margin-left: 10px;
+      margin-right: 10px;
       .per_menu{
+        
         height: 40px;
         color:black ;
-        min-width: 30px;
-        padding: 5px;
-        padding-left: 20px;
-        padding-right: 20px;
+        min-width: 50px;
+        margin-right: 15px;
+        margin-left: 15px;
         text-decoration: none;
         &:hover {
           font-weight: bold;
-          height: 4qh;
+          padding-bottom: 10px;
           filter: brightness(120%);
           -webkit-filter: brightness(120%);
-          //background-color: #be7d02;
+          
           border-bottom: solid black;
         }
       }
