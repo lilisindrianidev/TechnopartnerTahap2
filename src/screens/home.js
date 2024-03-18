@@ -138,9 +138,7 @@ class report extends Component {
           <div className="scroll">
             <div className="arrow arrow-right"
 
-              onClick={nextSlide}
-
-            >></div>
+              onClick={nextSlide}> view all </div>
             {bannerL.map((item, index) => {
 
 
