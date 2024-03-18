@@ -136,11 +136,11 @@ class report extends Component {
 
 
           <div className="scroll">
-            <button className="arrow arrow-right"
+            <div className="arrow arrow-right"
 
               onClick={nextSlide}
 
-            />
+            >></div>
             {bannerL.map((item, index) => {
 
 
